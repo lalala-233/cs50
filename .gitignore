@@ -1,4 +1,6 @@
-*/*
-!*/*.h
-!*/*.c
+*
+!*/
+!*.h
+!*.c
 !.gitignore
+!Makefile
