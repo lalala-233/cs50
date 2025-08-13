@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Number of uint16_ts in .wav header
+// Number of uint8_ts in .wav header
 const int HEADER_SIZE = 44;
 
 int main(int argc, char *argv[]) {
@@ -29,13 +29,13 @@ int main(int argc, char *argv[]) {
     float factor = atof(argv[3]);
     // TODO: Copy header from input file to output file
 
-    uint16_t header[HEADER_SIZE];
-    if (fread(header, sizeof(uint16_t), HEADER_SIZE, input) != HEADER_SIZE) {
+    uint8_t header[HEADER_SIZE];
+    if (fread(header, sizeof(uint8_t), HEADER_SIZE, input) != HEADER_SIZE) {
         printf("Could not read file.\n");
         return 1;
     }
 
-    if (fwrite(header, sizeof(uint16_t), HEADER_SIZE, output) != HEADER_SIZE) {
+    if (fwrite(header, sizeof(uint8_t), HEADER_SIZE, output) != HEADER_SIZE) {
         printf("Could not write file.\n");
         return 1;
     }
