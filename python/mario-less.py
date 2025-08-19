@@ -1,6 +1,6 @@
 while True:
     n = input("Height: ")
-    if n.isnumeric():
+    if n.isdecimal():
         n = int(n)
         if n >= 1 and n <= 8:
             break

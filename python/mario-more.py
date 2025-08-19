@@ -5,8 +5,8 @@ while True:
         if n >= 1 and n <= 8:
             break
     except:
-        n = ""
+        pass
 
 for i in range(1, n + 1):
-    line = " " * (n - i) + "#" * i
-    print(f"{line} {line[::-1]}")
+    line = " " * (n - i) + "#" * i + " "
+    print(line + line[::-1])
