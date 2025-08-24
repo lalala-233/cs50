@@ -1,8 +1,10 @@
 *
 !*/
-!*.py
-!*.h
-!*.sql
 !*.c
+!*.css
+!*.h
+!*.html
+!*.py
+!*.sql
 !.gitignore
 !Makefile

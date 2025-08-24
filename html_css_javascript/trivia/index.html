@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <title>Trivia!</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.incorrect').forEach(button => button.addEventListener('click', function () {
+                this.style.backgroundColor = 'red';
+                this.parentElement.querySelector('.feedback').innerHTML = 'Incorrect';
+            }));
+            document.querySelectorAll('.correct').forEach(button => button.addEventListener('click', function () {
+                this.style.backgroundColor = 'green';
+                this.parentElement.querySelector('.feedback').innerHTML = 'Correct!';
+            }));
+            document.querySelector('#check').addEventListener('click', function () {
+                let feedback = this.parentElement.querySelector('.feedback');
+                if (this.parentElement.querySelector('input').value === '114514') {
+                    feedback.innerHTML = 'Correct!';
+                    feedback.style.backgroundColor = 'green';
+                } else {
+                    feedback.innerHTML = 'InCorrect';
+                    feedback.style.backgroundColor = 'red';
+                }
+            })
+        })
+    </script>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Trivia!</h1>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2>Part 1: Multiple Choice </h2>
+            <hr>
+            <!-- TODO: Add multiple choice question here -->
+            <h3>
+                Which is the second highest mountain in the world by elevation?
+            </h3>
+            <button class="incorrect">Mount Everest (8,848 m)</button>
+            <button class="correct">Qogir Feng (8,611 m)</button>
+            <button class="incorrect">Kangchenjunga (8,586 m)</button>
+            <button class="incorrect">Lhotse (8,516 m)</button>
+            <p class="feedback"></p>
+        </div>
+
+        <div class="section">
+            <h2>Part 2: Free Response</h2>
+            <hr>
+            <!-- TODO: Add free response question here -->
+            <h3>Please input 114514.</h3>
+            <input autocomplete="off" autofocus placeholder=":P" type="text">
+            <button type="button" id="check">Submit</button>
+            <p class="feedback"></p>
+        </div>
+    </div>
+</body>
+
+</html>
