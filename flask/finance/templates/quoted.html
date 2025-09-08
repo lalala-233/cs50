@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Quote
+{% endblock %}
+
+{% block main %}
+{% if stock %}
+<div class="card mx-auto shadow-sm w-auto">
+    <div class="bg-primary card-header text-white">
+        <h5 class="card-title mb-0">Stock Quote</h5>
+    </div>
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between">
+                <span class="font-weight-bold">Symbol:</span>
+                <span class="text-monospace">{{ stock.symbol }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+                <span class="font-weight-bold">Company:</span>
+                <span>{{ stock.name }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+                <span class="font-weight-bold">Price:</span>
+                <span class="text-success font-weight-bold">
+                    {{ stock.price }}
+                </span>
+            </li>
+        </ul>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-warning mx-auto">
+    <div>
+        <h4 class="alert-heading mb-1">Stock Not Found</h4>
+        <p class="mb-0">The stock symbol you entered could not be found.</p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
