@@ -73,14 +73,23 @@ def buy():
         if new_cash < 0:
             return apology("do not have enough money")
         else:
-            db.execute("UPDATE users SET cash = ? WHERE id = ?", id, new_cash)
-            db.execute(
-                "INSERT INTO stock_purchases (user_id, stock_symbol, share, price_per_share) VALUES(?, ?, ?, ?)",
-                id,
-                symbol,
-                shares,
-                price,
-            )
+            db.execute("UPDATE users SET cash = ? WHERE id = ?", new_cash, id)
+            # This code may cause race conditions
+            try:
+                db.execute(
+                    "INSERT INTO holdings (user_id, stock_symbol, shares) VALUES(?, ?, ?)",
+                    id,
+                    symbol,
+                    shares,
+                )
+            # may db.IntegrityError
+            except ValueError:
+                db.execute(
+                    "UPDATE holdings SET shares = shares + ? WHERE user_id = ? AND stock_symbol = ?",
+                    shares,
+                    id,
+                    symbol,
+                )
         return redirect("/")
 
 
@@ -191,4 +200,47 @@ def register():
 @login_required
 def sell():
     """Sell shares of stock"""
-    return apology("TODO")
+    id = session.get("user_id")
+    if request.method == "GET":
+        symbols = db.execute("SELECT stock_symbol FROM holdings WHERE user_id = ? AND shares != 0", id)
+        return render_template("sell.html", symbols=symbols)
+    else:
+        symbol = request.form.get("symbol")
+        shares = request.form.get("shares")
+
+        if not symbol:
+            return apology("must provide symbol that you own")
+
+        try:
+            shares = int(shares)
+        except ValueError:
+            return apology("must provide positive integer")
+
+        if not shares:
+            return apology("must provide positive integer")
+
+        holding = db.execute(
+            "SELECT shares FROM holdings WHERE user_id = ? AND stock_symbol = ?",
+            id,
+            symbol,
+        )
+
+        if len(holding) != 1:
+            return apology("must provide symbol that you own")
+
+        holding = holding[0]["shares"]
+        new_holding = holding - shares
+        if new_holding < 0:
+            return apology("do not own that many shares")
+        else:
+            price = lookup(symbol)["price"]
+            db.execute(
+                "UPDATE holdings SET shares = ? WHERE user_id = ? AND stock_symbol = ?",
+                new_holding,
+                id,
+                symbol,
+            )
+            db.execute(
+                "UPDATE users SET cash = cash + ? WHERE id = ?", shares * price, id
+            )
+            return redirect("/")
